@@ -27,15 +27,14 @@ class PrintEditionItem {
 }
 
 class Magazine extends PrintEditionItem {
-    constructor(name, releaseDate, pagesCount, author) {
+    constructor(name, releaseDate, pagesCount) {
         super(name, releaseDate, pagesCount);
         this.type = "magazine";
-        this.author
     }
 }
 
 class Book extends PrintEditionItem {
-    constructor(author, name, releaseDate, pagesCount,) {
+    constructor(author, name, releaseDate, pagesCount) {
         super(name, releaseDate, pagesCount);
         this.author = author;
         this.type = "book";
@@ -44,24 +43,21 @@ class Book extends PrintEditionItem {
 
 class NovelBook extends Book {
     constructor(author, name, releaseDate, pagesCount) {
-        super(name, releaseDate, pagesCount);
-        this.author = author;
+        super(author, name, releaseDate, pagesCount);
         this.type = "novel";
     }
 }
 
 class FantasticBook extends Book {
     constructor(author, name, releaseDate, pagesCount) {
-        super(name, releaseDate, pagesCount);
-        this.author = author;
+        super(author, name, releaseDate, pagesCount);
         this.type = "fantastic";
     }
 }
 
 class DetectiveBook extends Book {
     constructor(author, name, releaseDate, pagesCount) {
-        super(name, releaseDate, pagesCount);
-        this.author = author;
+        super(author, name, releaseDate, pagesCount);
         this.type = "detective";
     }
 }
@@ -119,15 +115,16 @@ class Student {
     }
     
     addMark(mark, subjectName) {
-        if ((typeof mark === 'number') && (mark >= 1) && (mark <= 5)) {
-            this.marks[subjectName].push(mark);
+        if ((mark < 2) || (mark > 5)) {
+            return;
         }
-        if (this.marks.hasOwnProperty(subjectName) !== true) {
+        else if (this.marks.hasOwnProperty(subjectName) !== true) {
             this.marks[subjectName] = [];
+            this.marks[subjectName].push(mark);
             console.log('Несуществующий предмет. Предмет создан.');
         }
         else {
-            return console.log('Ошибка, оценка должна быть числом от 1 до 5');
+            this.marks[subjectName].push(mark);
         }
     }
 
@@ -143,18 +140,14 @@ class Student {
         }
     }
 
-    getAverage() {
-        if (this.averageBySubject != 0) {  
-            let sum = 0;
-            let marks = Object.values(this.marks);
-            let resultMarks = [];
-            marks.forEach((item) => resultMarks = [].concat(resultMarks, item));
-            resultMarks.forEach((item) => sum += item);
-            let average = sum / resultMarks.length;
-            return average;
-        } else { 
-            return 0
-        }
+    getAverage() { 
+        let sum = 0;
+        let marks = Object.values(this.marks);
+        let resultMarks = [];
+        marks.forEach((item) => resultMarks = [].concat(resultMarks, item));
+        resultMarks.forEach((item) => sum += item);
+        let average = sum / resultMarks.length;
+        return average || 0; 
     }
 
     exclude(reason) {
