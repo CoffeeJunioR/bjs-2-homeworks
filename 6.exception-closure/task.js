@@ -1,19 +1,17 @@
-﻿let error = new Error('Невалидное значение');
-
-function parseCount(value) {
+﻿function parseCount(value) {
     let parsed = Number.parseFloat(value);
-    console.log(parsed);
     if (isNaN (parsed)) {
-        throw error;
-    }
-    return parsed;
+        throw new Error('Невалидное значение');
+    } else {
+    return parsed
+}
 }
 
 function validateCount(value) {
     try {
         return parseCount(value);
     } catch (error) {
-        return error;
+        return error
     }
 };
 
@@ -21,30 +19,36 @@ function validateCount(value) {
 
 class Triangle {
     constructor(a, b, c) {
+        if (a + b < c || a + c < b || b + c < a) {
+            throw new Error('Треугольник с такими сторонами не существует');
+            }
         this.a = a;
         this.b = b;
         this.c = c;
-        if (this.a + this.b < this.c || this.a + this.c < this.b || this.b + this.c < this.a) {
-        this.error = new Error('Треугольник с такими сторонами не существует');
-            throw error;
-        }
     }
 
-    get perimetr() {
+    get perimeter() {
         return this.a + this.b + this.c;
     }
 
     get area() {
-        let p = this.perimetr;
-        return (Math.sqrt(p * (p - this.a) * (p - this.b) * (p - this.c)).toFixed(3))
+        let p = this.perimeter;
+        debugger;
+        return Number((Math.sqrt(p * (p - this.a) * (p - this.b) * (p - this.c))).toFixed(3));
     }
 }
 
 function getTriangle(a, b, c) {
-    let triangleError = new Error('Ошибка! Треугольник не существует')
     try {
-        return new Triangle(a, b, c);
-    } catch (triangleError) {
-        return Triangle.perimetr().area();
+        return new Triangle(a, b, c)
+    } catch(error) {
+        let errorTriangle = new Triangle(a, b, c);
+        errorTriangle.getArea = () => {
+            return "Ошибка! Треугольник не существует";
         }
+        errorTriangle.getPerimeter  = () =>{
+            return "Ошибка! Треугольник не существует";
+        }
+        return errorTriangle;
     }
+}
